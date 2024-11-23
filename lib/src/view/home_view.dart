@@ -136,7 +136,8 @@ class _HomeViewState extends State<HomeView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(currentDateTime.toString()),
+                            Text(
+                                '${DateFormat.yMMMMd().format(currentDateTime)} ${DateFormat.Hm().format(currentDateTime)}'),
                             const SizedBox(width: 8.0),
                             const Icon(Icons.edit),
                           ],
@@ -166,6 +167,15 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
               ),
+              SizedBox(height: 8.0),
+              ElevatedButton(
+                onPressed: () {
+                  setDialogState(() {
+                    currentDateTime = DateTime.now();
+                  });
+                },
+                child: const Text('Change to now'),
+              )
             ],
           ),
           actions: [
