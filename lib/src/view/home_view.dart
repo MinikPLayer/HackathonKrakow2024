@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_krakow_2024/src/pages/landing_page.dart';
+import 'package:hackathon_krakow_2024/src/pages/my_tickets_page.dart';
 import 'package:hackathon_krakow_2024/src/providers/connections_provider.dart';
+import 'package:hackathon_krakow_2024/src/providers/user_provider.dart';
 import 'package:hackathon_krakow_2024/src/settings/settings_controller.dart';
 import 'package:hackathon_krakow_2024/src/settings/settings_view.dart';
 
@@ -9,12 +11,14 @@ class HomeView extends StatefulWidget {
     super.key,
     required this.settingsController,
     required this.connectionsProvider,
+    required this.userProvider,
   });
 
   static const routeName = '/home';
 
   final SettingsController settingsController;
   final ConnectionsProvider connectionsProvider;
+  final UserProvider userProvider;
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -49,14 +53,11 @@ class _HomeViewState extends State<HomeView> {
           listenable: widget.connectionsProvider,
           builder: (BuildContext context, Widget? child) => PopScope(
             child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Home'),
-              ),
               bottomNavigationBar: BottomNavigationBar(
                 onTap: (value) => setState(() {
                   pageController.animateToPage(
                     value,
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                   );
                 }),
@@ -70,10 +71,11 @@ class _HomeViewState extends State<HomeView> {
               body: PageView(
                 controller: pageController,
                 children: [
-                  LandingPage(connectionsProvider: widget.connectionsProvider),
-                  const Center(
-                    child: Text('Hello'),
+                  LandingPage(
+                    connectionsProvider: widget.connectionsProvider,
+                    userProvider: widget.userProvider,
                   ),
+                  MyTicketsPage(userProvider: widget.userProvider),
                   SettingsView(controller: widget.settingsController)
                 ],
               ),

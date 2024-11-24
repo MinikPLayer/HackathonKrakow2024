@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:hackathon_krakow_2024/src/models/station.dart';
+import 'package:hackathon_krakow_2024/src/pages/connection_search_results_page.dart';
 import 'package:hackathon_krakow_2024/src/providers/connections_provider.dart';
+import 'package:hackathon_krakow_2024/src/providers/user_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart' as dp;
 
 class SearchConnectionsWidget extends StatefulWidget {
-  const SearchConnectionsWidget({super.key, required this.connectionsProvider});
+  const SearchConnectionsWidget({super.key, required this.connectionsProvider, required this.userProvider});
 
   final ConnectionsProvider connectionsProvider;
+  final UserProvider userProvider;
 
   @override
   State<SearchConnectionsWidget> createState() => _SearchConnectionsWidgetState();
@@ -241,7 +244,64 @@ class _SearchConnectionsWidgetState extends State<SearchConnectionsWidget> {
                                 Icons.keyboard_arrow_right,
                                 size: 48,
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                Station from;
+                                Station to;
+                                try {
+                                  from = widget.connectionsProvider.stations
+                                      .firstWhere((element) => element.name == _startStationSearchController.text);
+                                } catch (e) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text('Error'),
+                                      content: const Text('Start station not selected.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                try {
+                                  to = widget.connectionsProvider.stations
+                                      .firstWhere((element) => element.name == _endStationSearchController.text);
+                                } catch (e) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text('Error'),
+                                      content: const Text('End station not selected.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  return;
+                                }
+
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                                  return ConnectionSearchResultsPage(
+                                    from: from,
+                                    to: to,
+                                    conProvider: widget.connectionsProvider,
+                                    arrivalTime: _isDeparture ? null : _selectedDepartureArrivalTime,
+                                    departureTime: _isDeparture ? _selectedDepartureArrivalTime : null,
+                                    userProvider: widget.userProvider,
+                                  );
+                                }));
+                              },
                             ),
                           ),
                           Expanded(

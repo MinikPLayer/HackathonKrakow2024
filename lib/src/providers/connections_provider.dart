@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_krakow_2024/src/models/connection.dart';
 import 'package:hackathon_krakow_2024/src/models/location.dart';
@@ -19,9 +20,45 @@ class ConnectionsProvider extends ChangeNotifier {
     _stations.add(krLobzow);
     _stations.add(inna);
 
-    _connections.add(Connection(from: krGlowny, to: krLobzow, lanes: 3));
-    _connections.add(Connection(from: krLobzow, to: krGlowny, lanes: 2));
-    _connections.add(Connection(from: krGlowny, to: inna, lanes: 1));
+    for (var now = DateTime.now();
+        now.isBefore(DateTime.now().add(const Duration(days: 7)));
+        now = now.add(const Duration(minutes: 15))) {
+      _connections.add(Connection(
+        from: krGlowny,
+        to: krLobzow,
+        price: Decimal.parse('2.50'),
+        departureTime: now,
+        arrivalTime: now.add(const Duration(minutes: 10)),
+      ));
+      _connections.add(Connection(
+        from: krLobzow,
+        to: krGlowny,
+        price: Decimal.parse('2.50'),
+        departureTime: now,
+        arrivalTime: now.add(const Duration(minutes: 10)),
+      ));
+      _connections.add(Connection(
+        from: krGlowny,
+        to: inna,
+        price: Decimal.parse('5.00'),
+        departureTime: now,
+        arrivalTime: now.add(const Duration(minutes: 25)),
+      ));
+    }
+  }
+
+  (List<Connection> connections, bool isAll) getConnections(
+      Station from, Station to, DateTime? departureTime, DateTime? arrivalTime, int limitNumber) {
+    var connections = _connections
+        .where((element) =>
+            element.from == from &&
+            element.to == to &&
+            (departureTime == null ||
+                element.departureTime.millisecondsSinceEpoch > departureTime.millisecondsSinceEpoch) &&
+            (arrivalTime == null || element.arrivalTime.millisecondsSinceEpoch > arrivalTime.millisecondsSinceEpoch))
+        .toList();
+    bool isAll = connections.length <= limitNumber;
+    return (isAll ? connections : connections.sublist(0, limitNumber), isAll);
   }
 
   void addStation(Station station) {
