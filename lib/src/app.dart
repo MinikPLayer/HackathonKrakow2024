@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hackathon_krakow_2024/src/models/user.dart';
 import 'package:hackathon_krakow_2024/src/providers/connections_provider.dart';
 import 'package:hackathon_krakow_2024/src/providers/user_provider.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the
@@ -55,6 +57,7 @@ class MyApp extends StatelessWidget {
           // directory.
           onGenerateTitle: (BuildContext context) => AppLocalizations.of(context)!.appTitle,
 
+          builder: FToastBuilder(),
           home: HomeView(
             connectionsProvider: connectionsProvider,
             settingsController: settingsController,

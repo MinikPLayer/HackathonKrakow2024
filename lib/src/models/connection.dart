@@ -12,6 +12,7 @@ class Connection extends ChangeNotifier {
   DateTime departureTime;
   DateTime arrivalTime;
 
+  Duration avgDelay = const Duration();
   Duration delay = const Duration();
   List<Carriage> carriages = [];
   List<ReportedProblem> problems = [];
@@ -22,7 +23,24 @@ class Connection extends ChangeNotifier {
   }
 
   void addProblem(ReportedProblem problem) {
-    problems.add(problem);
+    int existingIndex = -1;
+    for (var i = 0; i < problems.length; i++) {
+      if (problems[i].problem == problem.problem) {
+        existingIndex = i;
+        break;
+      }
+    }
+
+    if (existingIndex == -1) {
+      problems.add(problem);
+    } else {
+      var severityIndex = ProblemsSeverity.values.indexOf(problem.severity);
+      var existingSeverityIndex = ProblemsSeverity.values.indexOf(problems[existingIndex].severity);
+
+      if (severityIndex > existingSeverityIndex) {
+        problems[existingIndex] = problem;
+      }
+    }
     notifyListeners();
   }
 
@@ -32,9 +50,10 @@ class Connection extends ChangeNotifier {
     required this.price,
     required this.departureTime,
     required this.arrivalTime,
+    required this.avgDelay,
     required int carriagesCount,
   }) {
-    for (var i = 0; i < carriagesCount; i++) {
+    for (var i = 1; i <= carriagesCount; i++) {
       carriages.add(Carriage(number: i.toString(), seats: 50));
     }
   }

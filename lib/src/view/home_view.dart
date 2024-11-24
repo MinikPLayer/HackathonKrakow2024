@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hackathon_krakow_2024/src/pages/landing_page.dart';
 import 'package:hackathon_krakow_2024/src/pages/my_tickets_page.dart';
 import 'package:hackathon_krakow_2024/src/providers/connections_provider.dart';
@@ -20,6 +21,26 @@ class HomeView extends StatefulWidget {
   final ConnectionsProvider connectionsProvider;
   final UserProvider userProvider;
 
+  static late FToast ftoast;
+
+  static void showToast(BuildContext context, String message) {
+    ftoast.showToast(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25.0),
+          color: Theme.of(context).colorScheme.surface.withAlpha(196),
+        ),
+        child: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
@@ -33,7 +54,6 @@ class SubRouteEntry {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final navigatorKey = GlobalKey<NavigatorState>();
   static List<SubRouteEntry> subRoutes = [
     SubRouteEntry('Home', 'landing', Icons.home),
     SubRouteEntry('My Tickets', 'tickets', Icons.airplane_ticket),
@@ -43,6 +63,13 @@ class _HomeViewState extends State<HomeView> {
   final pageController = PageController();
 
   int currentSubpageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    HomeView.ftoast = FToast();
+    HomeView.ftoast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {

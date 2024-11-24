@@ -25,7 +25,10 @@ class CarriageWidget extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text(carriage.number),
+              Text(
+                carriage.number,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold),
+              ),
               Text('${carriage.seatsTaken}/${carriage.seats}'),
             ],
           ),

@@ -26,12 +26,15 @@ class ConnectionsProvider extends ChangeNotifier {
     for (var now = DateTime.now();
         now.isBefore(DateTime.now().add(const Duration(days: 7)));
         now = now.add(const Duration(minutes: 15))) {
+      var delay = Random().nextInt(100);
+      var avgDelay = delay + Random().nextInt(20) - 10;
       var newCon = Connection(
         from: krGlowny,
         to: krLobzow,
         price: Decimal.parse('2.50'),
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 10)),
+        avgDelay: Duration(minutes: avgDelay),
         carriagesCount: Random().nextInt(7) + 3,
       );
 
@@ -46,24 +49,36 @@ class ConnectionsProvider extends ChangeNotifier {
         }
       }
 
-      newCon.setDelay(Duration(minutes: Random().nextInt(100)));
+      newCon.setDelay(Duration(minutes: delay));
       _connections.add(newCon);
-      _connections.add(Connection(
+
+      delay = Random().nextInt(30);
+      avgDelay = delay + Random().nextInt(20) - 10;
+      newCon = Connection(
         from: krLobzow,
         to: krGlowny,
         price: Decimal.parse('2.50'),
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 10)),
+        avgDelay: Duration(minutes: avgDelay),
         carriagesCount: Random().nextInt(7) + 3,
-      ));
-      _connections.add(Connection(
+      );
+      newCon.setDelay(Duration(minutes: delay));
+      _connections.add(newCon);
+
+      delay = Random().nextInt(20);
+      avgDelay = delay + Random().nextInt(20) - 10;
+      newCon = Connection(
         from: krGlowny,
         to: inna,
         price: Decimal.parse('5.00'),
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 25)),
+        avgDelay: Duration(minutes: avgDelay),
         carriagesCount: Random().nextInt(7) + 3,
-      ));
+      );
+      newCon.setDelay(Duration(minutes: delay));
+      _connections.add(newCon);
     }
   }
 

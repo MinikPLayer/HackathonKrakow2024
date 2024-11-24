@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_krakow_2024/src/dialogs/add_connection_notification_dialog.dart';
 import 'package:hackathon_krakow_2024/src/dialogs/report_problem_dialog.dart';
 import 'package:hackathon_krakow_2024/src/models/connection.dart';
 import 'package:hackathon_krakow_2024/src/models/reported_problem.dart';
@@ -25,6 +26,17 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Connection details'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notification_add),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (ctx) => AddConnectionNotificationDialog(
+                connection: widget.connection,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -46,12 +58,16 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
                   ),
                 ),
                 if (widget.connection.delay.inMinutes > 0)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Text(
-                      '+${widget.connection.delay.inMinutes}',
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.red),
-                    ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: Text(
+                          '+${widget.connection.delay.inMinutes}',
+                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.red),
+                        ),
+                      ),
+                    ],
                   ),
                 Expanded(
                   child: ListTile(
@@ -66,6 +82,16 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
                         textAlign: TextAlign.right),
                   ),
                 ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Text('7d average delay: ', style: Theme.of(context).textTheme.headlineSmall),
+                Text('${widget.connection.avgDelay.inMinutes} min',
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.red)),
               ],
             ),
           ),
@@ -99,6 +125,10 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
             ),
           ),
           const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Carriages:', style: Theme.of(context).textTheme.headlineSmall),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: widget.connection.carriages.length,
