@@ -8,7 +8,7 @@ class AddConnectionNotificationDialog extends StatefulWidget {
 
   final Connection connection;
 
-  static List<DropdownMenuItem<Duration>> items = [
+  static const List<DropdownMenuItem<Duration>> items = [
     DropdownMenuItem(value: const Duration(minutes: 5), child: Text('5 minutes')),
     DropdownMenuItem(value: const Duration(minutes: 10), child: Text('10 minutes')),
     DropdownMenuItem(value: const Duration(minutes: 15), child: Text('15 minutes')),

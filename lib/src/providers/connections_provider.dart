@@ -35,6 +35,7 @@ class ConnectionsProvider extends ChangeNotifier {
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 10)),
         avgDelay: Duration(minutes: avgDelay),
+        type: ConnectionType.train,
         carriagesCount: Random().nextInt(7) + 3,
       );
 
@@ -61,6 +62,7 @@ class ConnectionsProvider extends ChangeNotifier {
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 10)),
         avgDelay: Duration(minutes: avgDelay),
+        type: ConnectionType.train,
         carriagesCount: Random().nextInt(7) + 3,
       );
       newCon.setDelay(Duration(minutes: delay));
@@ -75,6 +77,7 @@ class ConnectionsProvider extends ChangeNotifier {
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 25)),
         avgDelay: Duration(minutes: avgDelay),
+        type: ConnectionType.train,
         carriagesCount: Random().nextInt(7) + 3,
       );
       newCon.setDelay(Duration(minutes: delay));

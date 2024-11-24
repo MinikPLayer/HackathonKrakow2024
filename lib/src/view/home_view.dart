@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hackathon_krakow_2024/src/pages/landing_page.dart';
 import 'package:hackathon_krakow_2024/src/pages/my_tickets_page.dart';
+import 'package:hackathon_krakow_2024/src/pages/scanner_page.dart';
 import 'package:hackathon_krakow_2024/src/providers/connections_provider.dart';
 import 'package:hackathon_krakow_2024/src/providers/user_provider.dart';
 import 'package:hackathon_krakow_2024/src/settings/settings_controller.dart';
-import 'package:hackathon_krakow_2024/src/settings/settings_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({
@@ -42,7 +42,7 @@ class HomeView extends StatefulWidget {
   }
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomeView> createState() => HomeViewState();
 }
 
 class SubRouteEntry {
@@ -53,11 +53,11 @@ class SubRouteEntry {
   SubRouteEntry(this.title, this.subRoute, this.icon);
 }
 
-class _HomeViewState extends State<HomeView> {
+class HomeViewState extends State<HomeView> {
   static List<SubRouteEntry> subRoutes = [
     SubRouteEntry('Home', 'landing', Icons.home),
     SubRouteEntry('My Tickets', 'tickets', Icons.airplane_ticket),
-    SubRouteEntry('Settings', 'settings', Icons.settings),
+    SubRouteEntry('Scan', 'scan', Icons.qr_code),
   ];
 
   final pageController = PageController();
@@ -107,7 +107,9 @@ class _HomeViewState extends State<HomeView> {
                     userProvider: widget.userProvider,
                   ),
                   MyTicketsPage(userProvider: widget.userProvider),
-                  SettingsView(controller: widget.settingsController)
+                  ScannerPage(
+                    homeViewState: this,
+                  )
                 ],
               ),
             ),

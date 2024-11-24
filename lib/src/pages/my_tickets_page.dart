@@ -35,6 +35,7 @@ class MyTicketsPage extends StatelessWidget {
                   return ListenableBuilder(
                     listenable: ticket.connection,
                     builder: (context, child) => ListTile(
+                      leading: const Icon(Icons.train),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

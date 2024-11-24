@@ -110,6 +110,7 @@ class _ConnectionSearchResultsPageState extends State<ConnectionSearchResultsPag
                   return Column(
                     children: [
                       ListTile(
+                        leading: Icon(filteredConnections[index].icon),
                         trailing: Text('${filteredConnections[index].price} PLN',
                             style: Theme.of(context).textTheme.headlineSmall),
                         title: Row(

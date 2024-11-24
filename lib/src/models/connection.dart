@@ -4,10 +4,16 @@ import 'package:hackathon_krakow_2024/src/models/carriage.dart';
 import 'package:hackathon_krakow_2024/src/models/reported_problem.dart';
 import 'package:hackathon_krakow_2024/src/models/station.dart';
 
+enum ConnectionType {
+  train,
+  bus,
+}
+
 class Connection extends ChangeNotifier {
   Station from;
   Station to;
 
+  ConnectionType type;
   Decimal price;
   DateTime departureTime;
   DateTime arrivalTime;
@@ -16,6 +22,15 @@ class Connection extends ChangeNotifier {
   Duration delay = const Duration();
   List<Carriage> carriages = [];
   List<ReportedProblem> problems = [];
+
+  IconData get icon {
+    switch (type) {
+      case ConnectionType.train:
+        return Icons.train;
+      case ConnectionType.bus:
+        return Icons.directions_bus;
+    }
+  }
 
   void setDelay(Duration delay) {
     this.delay = delay;
@@ -51,6 +66,7 @@ class Connection extends ChangeNotifier {
     required this.departureTime,
     required this.arrivalTime,
     required this.avgDelay,
+    required this.type,
     required int carriagesCount,
   }) {
     for (var i = 1; i <= carriagesCount; i++) {

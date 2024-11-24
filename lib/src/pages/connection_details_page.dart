@@ -49,6 +49,7 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
               children: [
                 Expanded(
                   child: ListTile(
+                    leading: Icon(widget.connection.icon),
                     titleTextStyle: Theme.of(context).textTheme.labelLarge!,
                     subtitleTextStyle: Theme.of(context).textTheme.bodyMedium!,
                     title: Text(widget.connection.from.name),
@@ -71,6 +72,7 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
                   ),
                 Expanded(
                   child: ListTile(
+                    trailing: Icon(widget.connection.icon),
                     titleTextStyle: Theme.of(context).textTheme.labelLarge!,
                     subtitleTextStyle: Theme.of(context).textTheme.bodyMedium!,
                     title: Text(
