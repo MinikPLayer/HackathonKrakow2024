@@ -15,8 +15,7 @@ class _ScannerPageState extends State<ScannerPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 1)).then((d) {
-      // ignore: use_build_context_synchronously
-      HomeView.showToast(context, 'Seat scanned successfully!');
+      if (context.mounted) HomeView.showToast(context, 'Seat scanned successfully!');
       widget.homeViewState.pageController.animateToPage(
         1,
         duration: const Duration(milliseconds: 300),

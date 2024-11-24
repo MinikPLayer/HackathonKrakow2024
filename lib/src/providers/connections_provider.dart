@@ -17,7 +17,7 @@ class ConnectionsProvider extends ChangeNotifier {
   ConnectionsProvider() {
     var krGlowny = Station('Kraków Główny', 'Kraków', Location(50.068, 19.947), StationType.train);
     var krLobzow = Station('Kraków Łobzów', 'Kraków', Location(50.082, 19.916), StationType.train);
-    var inna = Station('Inna stacja', 'Innowo', Location(12.345, 67.789), StationType.bus);
+    var inna = Station('Kraków Bronowice', 'Kraków', Location(12.345, 67.789), StationType.bus);
 
     _stations.add(krGlowny);
     _stations.add(krLobzow);

@@ -91,6 +91,21 @@ class _ConnectionDetailsPageState extends State<ConnectionDetailsPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
+                const Icon(Icons.android),
+                const SizedBox(width: 8),
+                Text('AI prediction: ', style: Theme.of(context).textTheme.headlineSmall),
+                Text(
+                    '${widget.connection.avgDelay.inMinutes + (((widget.connection.delay.inMinutes - widget.connection.avgDelay.inMinutes) / 2).round())} min',
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.red)),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                const Icon(Icons.calendar_month),
+                const SizedBox(width: 8),
                 Text('7d average delay: ', style: Theme.of(context).textTheme.headlineSmall),
                 Text('${widget.connection.avgDelay.inMinutes} min',
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.red)),
