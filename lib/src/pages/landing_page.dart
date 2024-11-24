@@ -215,12 +215,19 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Search connections',
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ),
                           generateStationSearchBox(_startStationSearchController, 'Start station', Icons.play_arrow),
                           generateStationSearchBox(_endStationSearchController, 'End station', Icons.flag),
                         ],
                       ),
                     ),
-                    // const VerticalDivider(),
+                    const VerticalDivider(),
                     Expanded(
                       flex: 2,
                       child: Column(
@@ -229,7 +236,6 @@ class _LandingPageState extends State<LandingPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Expanded(
-                            flex: 2,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(8.0),
                               child: const Icon(
@@ -240,7 +246,6 @@ class _LandingPageState extends State<LandingPage> {
                             ),
                           ),
                           Expanded(
-                            flex: 3,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Padding(
