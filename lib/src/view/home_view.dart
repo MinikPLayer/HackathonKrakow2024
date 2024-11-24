@@ -54,6 +54,7 @@ class _HomeViewState extends State<HomeView> {
           builder: (BuildContext context, Widget? child) => PopScope(
             child: Scaffold(
               bottomNavigationBar: BottomNavigationBar(
+                currentIndex: currentSubpageIndex,
                 onTap: (value) => setState(() {
                   pageController.animateToPage(
                     value,
@@ -70,6 +71,9 @@ class _HomeViewState extends State<HomeView> {
               ),
               body: PageView(
                 controller: pageController,
+                onPageChanged: (value) => setState(() {
+                  currentSubpageIndex = value;
+                }),
                 children: [
                   LandingPage(
                     connectionsProvider: widget.connectionsProvider,

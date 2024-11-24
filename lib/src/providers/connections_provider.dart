@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_krakow_2024/src/models/connection.dart';
 import 'package:hackathon_krakow_2024/src/models/location.dart';
+import 'package:hackathon_krakow_2024/src/models/reported_problem.dart';
 import 'package:hackathon_krakow_2024/src/models/station.dart';
 
 class ConnectionsProvider extends ChangeNotifier {
@@ -23,19 +26,35 @@ class ConnectionsProvider extends ChangeNotifier {
     for (var now = DateTime.now();
         now.isBefore(DateTime.now().add(const Duration(days: 7)));
         now = now.add(const Duration(minutes: 15))) {
-      _connections.add(Connection(
+      var newCon = Connection(
         from: krGlowny,
         to: krLobzow,
         price: Decimal.parse('2.50'),
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 10)),
-      ));
+        carriagesCount: Random().nextInt(7) + 3,
+      );
+
+      for (var c in newCon.carriages) {
+        c.seatsTaken = Random().nextInt(c.seats);
+      }
+
+      for (var c in Problems.values) {
+        if (Random().nextInt(10) > 5) {
+          var severity = ProblemsSeverity.values[Random().nextInt(3)];
+          newCon.addProblem(ReportedProblem(problem: c, severity: severity));
+        }
+      }
+
+      newCon.setDelay(Duration(minutes: Random().nextInt(100)));
+      _connections.add(newCon);
       _connections.add(Connection(
         from: krLobzow,
         to: krGlowny,
         price: Decimal.parse('2.50'),
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 10)),
+        carriagesCount: Random().nextInt(7) + 3,
       ));
       _connections.add(Connection(
         from: krGlowny,
@@ -43,6 +62,7 @@ class ConnectionsProvider extends ChangeNotifier {
         price: Decimal.parse('5.00'),
         departureTime: now,
         arrivalTime: now.add(const Duration(minutes: 25)),
+        carriagesCount: Random().nextInt(7) + 3,
       ));
     }
   }

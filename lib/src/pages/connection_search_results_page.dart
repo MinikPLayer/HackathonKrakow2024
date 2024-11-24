@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_krakow_2024/src/models/station.dart';
 import 'package:hackathon_krakow_2024/src/models/ticket.dart';
+import 'package:hackathon_krakow_2024/src/pages/connection_details_page.dart';
 import 'package:hackathon_krakow_2024/src/providers/connections_provider.dart';
 import 'package:hackathon_krakow_2024/src/providers/user_provider.dart';
 import 'package:intl/intl.dart';
@@ -111,9 +112,16 @@ class _ConnectionSearchResultsPageState extends State<ConnectionSearchResultsPag
                       ListTile(
                         trailing: Text('${filteredConnections[index].price} PLN',
                             style: Theme.of(context).textTheme.headlineSmall),
-                        title: Text(
-                            '${DateFormat.Hm().format(filteredConnections[index].departureTime)} - ${DateFormat.Hm().format(filteredConnections[index].arrivalTime)}',
-                            style: Theme.of(context).textTheme.headlineSmall),
+                        title: Row(
+                          children: [
+                            Text(
+                                '${DateFormat.Hm().format(filteredConnections[index].departureTime)} - ${DateFormat.Hm().format(filteredConnections[index].arrivalTime)}',
+                                style: Theme.of(context).textTheme.headlineSmall),
+                            if (filteredConnections[index].delay.inMinutes > 0)
+                              Text(' (+${filteredConnections[index].delay.inMinutes} min)',
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.red)),
+                          ],
+                        ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -121,35 +129,15 @@ class _ConnectionSearchResultsPageState extends State<ConnectionSearchResultsPag
                           ],
                         ),
                         onTap: () async {
-                          var newTicket = Ticket(connection: filteredConnections[index]);
-                          widget.userProvider.addTicket(newTicket);
-                          await showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text('Ticket bought'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      '${DateFormat.yMMMd().format(filteredConnections[index].departureTime)} ${DateFormat.Hm().format(filteredConnections[index].departureTime)}',
-                                      style: Theme.of(context).textTheme.headlineSmall),
-                                  Text('${filteredConnections[index].price} PLN',
-                                      style: Theme.of(context).textTheme.headlineSmall),
-                                ],
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ConnectionDetailsPage(
+                                connection: filteredConnections[index],
+                                userProvider: widget.userProvider,
                               ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(ctx).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
                             ),
                           );
-                          // ignore: use_build_context_synchronously
-                          Navigator.of(context).pop();
                         },
                       ),
                       const Divider(
